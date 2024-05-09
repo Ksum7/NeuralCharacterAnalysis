@@ -116,6 +116,7 @@ if selection == "About":
         Quoted from and further information: [Wikipedia](https://en.wikipedia.org/wiki/Myers%E2%80%93Briggs_Type_Indicator)
         """
     )
+    st.markdown(f'<a href="https://character-analysis.streamlit.app/" target="_blank"><img src="http://qrcoder.ru/code/?https%3A%2F%2Fcharacter-analysis.streamlit.app%2F&4&0" width="148" height="148" border="0" title="QR code"></a>', unsafe_allow_html=True)
     
 
 elif selection == "Bias, Risks, and Limitations":
