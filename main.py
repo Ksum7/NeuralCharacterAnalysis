@@ -14,7 +14,7 @@ def load_models():
     spacy.prefer_gpu()
     nlp = spacy.load("en_core_web_md")
 
-    with open(f'./mrc2_dict.json', 'r') as f:
+    with open(f'./nrc2_dict.json', 'r') as f:
         word_data = json.load(f)
 
     fModel = load_model.load_model("./models_info.pth")
