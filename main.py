@@ -104,7 +104,6 @@ if selection == "About":
 
         |     | Subjective     | Objective      |
         |-----|----------------|----------------|
-        | _   | Intuition/Sensing | Introversion/Extraversion |
         | Deductive | Intuition/Sensing | Introversion/Extraversion |
         | Inductive | Feeling/Thinking | Perception/Judging |
 
