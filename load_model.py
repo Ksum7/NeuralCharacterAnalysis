@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pytorch_lightning as pl
 
-class ModelWithoutNRC(pl.LightningModule):
+class ModelWithoutMRC(pl.LightningModule):
     def __init__(self):
         super().__init__()
         self.loss = torch.nn.BCEWithLogitsLoss()
@@ -15,7 +15,7 @@ class ModelWithoutNRC(pl.LightningModule):
         self.fc4 = nn.Linear(64, 1)
 
 
-    def forward(self, vectors, nrc):
+    def forward(self, vectors, mrc):
         x = vectors.unsqueeze(1)
         x = self.GRU(x.squeeze(1))[0]
         x = self.GRU1(x)[0]
@@ -29,8 +29,8 @@ class ModelWithoutNRC(pl.LightningModule):
 
 
     def training_step(self, batch, batch_idx):
-        inputs, nrc, labels = batch
-        outputs = self(inputs, nrc)
+        inputs, mrc, labels = batch
+        outputs = self(inputs, mrc)
 
         loss = self.loss(outputs, labels.float())
 
@@ -38,8 +38,8 @@ class ModelWithoutNRC(pl.LightningModule):
         return loss
 
     def validation_step(self, batch, batch_idx):
-        inputs, nrc, labels = batch
-        outputs = self(inputs, nrc)
+        inputs, mrc, labels = batch
+        outputs = self(inputs, mrc)
 
         loss = self.loss(outputs, labels.float())
 
@@ -47,8 +47,8 @@ class ModelWithoutNRC(pl.LightningModule):
 
 
     def test_step(self, batch, batch_idx):
-        inputs, nrc, labels = batch
-        outputs = F.sigmoid(self(inputs, nrc))
+        inputs, mrc, labels = batch
+        outputs = F.sigmoid(self(inputs, mrc))
 
         mse = torch.mean((outputs - labels)**2)
         self.log('test_mse', mse, on_step=False, on_epoch=True)
@@ -57,7 +57,7 @@ class ModelWithoutNRC(pl.LightningModule):
         return torch.optim.AdamW(self.parameters(), lr=1e-6)
 
 
-class ModelWithNRC(pl.LightningModule):
+class ModelWithMRC(pl.LightningModule):
     def __init__(self):
         super().__init__()
         self.loss = torch.nn.BCEWithLogitsLoss()
@@ -69,22 +69,22 @@ class ModelWithNRC(pl.LightningModule):
         self.fc4 = nn.Linear(64, 1)
 
 
-    def forward(self, vectors, nrc):
+    def forward(self, vectors, mrc):
         x = vectors.unsqueeze(1)
         x = self.GRU(x.squeeze(1))[0]
         x = self.GRU1(x)[0]
         x = x.reshape(x.size(0), -1)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        x = F.relu(self.fc3(torch.cat([x, nrc], dim=1)))
+        x = F.relu(self.fc3(torch.cat([x, mrc], dim=1)))
         x = self.fc4(x)
 
         return x
 
 
     def training_step(self, batch, batch_idx):
-        inputs, nrc, labels = batch
-        outputs = self(inputs, nrc)
+        inputs, mrc, labels = batch
+        outputs = self(inputs, mrc)
 
         loss = self.loss(outputs, labels.float())
 
@@ -92,8 +92,8 @@ class ModelWithNRC(pl.LightningModule):
         return loss
 
     def validation_step(self, batch, batch_idx):
-        inputs, nrc, labels = batch
-        outputs = self(inputs, nrc)
+        inputs, mrc, labels = batch
+        outputs = self(inputs, mrc)
 
         loss = self.loss(outputs, labels.float())
 
@@ -101,8 +101,8 @@ class ModelWithNRC(pl.LightningModule):
 
 
     def test_step(self, batch, batch_idx):
-        inputs, nrc, labels = batch
-        outputs = F.sigmoid(self(inputs, nrc))
+        inputs, mrc, labels = batch
+        outputs = F.sigmoid(self(inputs, mrc))
 
         mse = torch.mean((outputs - labels)**2)
         self.log('test_mse', mse, on_step=False, on_epoch=True)
@@ -117,10 +117,10 @@ class FinalModel(pl.LightningModule):
         self.loss = torch.nn.BCEWithLogitsLoss()
         for model_name in ["e", "n", "a", "c", "o"]:
             model_info = models_info[model_name]
-            if model_info["with_nrc"]:
-                model = ModelWithNRC()
+            if model_info["with_mrc"]:
+                model = ModelWithMRC()
             else:
-                model = ModelWithoutNRC()
+                model = ModelWithoutMRC()
             model.load_state_dict(model_info["state_dict"])
             setattr(self, model_name, model)
 
