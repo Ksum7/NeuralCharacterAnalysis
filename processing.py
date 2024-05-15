@@ -19,23 +19,23 @@ def evalText(fModel, nlp, word_data, text):
     fModel.to(device)
     with torch.no_grad():
         input = torch.zeros((200, 300), device=device, dtype=torch.float32)
-        mrc = np.zeros(27)
+        nrc = np.zeros(27)
         words = []
         for word in nlp(text)[:200]:
             if word.lemma_ in word_data:
-                mrc += np.array(word_data[word.lemma_])
+                nrc += np.array(word_data[word.lemma_])
             if word.has_vector and word.is_alpha:
                 words.append(word.vector)
 
-        mrc = torch.tensor(np.array(mrc), device=device, dtype=torch.float32).unsqueeze(0)
-        mrc = mrc / torch.norm(mrc, p=2, dim=1, keepdim=True)
-        mrc = torch.nan_to_num(mrc, nan=0)
+        nrc = torch.tensor(np.array(nrc), device=device, dtype=torch.float32).unsqueeze(0)
+        nrc = nrc / torch.norm(nrc, p=2, dim=1, keepdim=True)
+        nrc = torch.nan_to_num(nrc, nan=0)
 
         words = torch.tensor(np.array(words), device=device, dtype=torch.float32)
         input[:words.shape[0]] = words
         input = input.unsqueeze(0)
 
-        outputs = F.sigmoid(fModel(input, mrc)).squeeze()
+        outputs = F.sigmoid(fModel(input, nrc)).squeeze()
         print(outputs)
         return outputs
     
