@@ -119,7 +119,7 @@ class FinalModel(pl.LightningModule):
         self.loss = torch.nn.BCEWithLogitsLoss()
         for model_name in ["e", "n", "a", "c", "o"]:
             model_info = models_info[model_name]
-            if model_info["with_nrc"]:
+            if model_info["with_mrc"]:
                 model = ModelWithNRC()
             else:
                 model = ModelWithoutNRC()
