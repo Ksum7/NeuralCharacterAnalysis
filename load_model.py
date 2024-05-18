@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import pytorch_lightning as pl
+import requests
+from io import BytesIO
 
 class ModelWithoutNRC(pl.LightningModule):
     def __init__(self):
@@ -127,6 +129,8 @@ class FinalModel(pl.LightningModule):
     def forward(self, v, m):
         return torch.cat([self.e(v, m), self.n(v, m), self.a(v, m), self.c(v, m), self.o(v, m)], dim=1)
 
-def load_model(path):
-    models_info = torch.load(path)
+def load_model(url):
+    response = requests.get(url)
+    data = response.content
+    models_info = torch.load(BytesIO(data))
     return FinalModel(models_info)
