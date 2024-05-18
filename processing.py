@@ -27,7 +27,7 @@ def evalText(fModel, nlp, word_data, text):
                 words.append(word.vector)
 
         mrc = torch.tensor(np.array(mrc), device=device, dtype=torch.float32).unsqueeze(0)
-        mrc = mrc / torch.norm(mrc, p=2, dim=1, keepdim=True)
+        mrc = mrc / 200.0
         mrc = torch.nan_to_num(mrc, nan=0)
 
         words = torch.tensor(np.array(words), device=device, dtype=torch.float32)
