@@ -14,7 +14,6 @@ label_names = ['Extroversion', 'Neuroticism', 'Agreeableness', 'Conscientiousnes
 
 def evalText(fModel, nlp, word_data, text):
     text = GoogleTranslator(source='auto', target='en').translate(text)
-    print(text)
     fModel.eval()
     fModel.to(device)
     with torch.no_grad():
@@ -36,7 +35,6 @@ def evalText(fModel, nlp, word_data, text):
         input = input.unsqueeze(0)
 
         outputs = F.sigmoid(fModel(input, mrc)).squeeze()
-        print(outputs)
         return outputs
     
 
