@@ -54,7 +54,7 @@ def print_info(outputs):
 
     draw_polar_chart([o * 100 for o in outputs])
 
-@st.cache_data(max_entries=3, show_spinner=False)
+@st.cache_resource(show_spinner=False)
 def load_models():
     spacy.prefer_gpu()
     nlp = spacy.load("en_core_web_md")
