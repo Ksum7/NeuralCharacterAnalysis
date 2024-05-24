@@ -62,7 +62,7 @@ def load_models():
     with open(f'./mrc2_dict_norm.json', 'r') as f:
         word_data = json.load(f)
 
-    fModel = load_model.load_model("https://drive.usercontent.google.com/download?id=1-2PaqE41EOjTR23xIIHvPO8U7BWh_nbm&authuser=0&confirm=t&uuid=0e12c5b0-4419-4388-80d1-3145f1e83add")
+    fModel = load_model.load_model(st.secrets["model_url"])
     return fModel, nlp, word_data
 
 st.set_page_config(layout="wide", page_title="Personality Traits Detection")
