@@ -96,8 +96,6 @@ if selection == "About":
         - **Agreeableness:** Friendly/Compassionate vs. Challenging/Detached
         - **Neuroticism:** Sensitive/Nervous vs. Secure/Confident
 
-        Quoted from and further information: [Wikipedia](https://en.wikipedia.org/wiki/Big_Five_personality_traits)
-
         ## The Myers–Briggs Type Indicator
 
         The Myers–Briggs Type Indicator (MBTI) is an introspective self-report questionnaire indicating differing psychological preferences in how people perceive the world and make decisions.
@@ -112,7 +110,6 @@ if selection == "About":
         - **ESTJ:** extraversion (E), sensing (S), thinking (T), judgment (J)
         - **INFP:** introversion (I), intuition (N), feeling (F), perception (P)
 
-        Quoted from and further information: [Wikipedia](https://en.wikipedia.org/wiki/Myers%E2%80%93Briggs_Type_Indicator)
         """
     )
     # st.markdown(f'<a href="https://character-analysis.streamlit.app/" target="_blank"><img src="http://qrcoder.ru/code/?https%3A%2F%2Fcharacter-analysis.streamlit.app%2F&4&0" width="148" height="148" border="0" title="QR code"></a>', unsafe_allow_html=True)
