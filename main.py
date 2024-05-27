@@ -49,7 +49,7 @@ def print_info(outputs):
         column.metric(label_names[i], f"{metric_value}%")
 
     mbti_type = big5_to_mbti(outputs)
-    styled_text = f"<p style='font-size:24px; margin-bottom: 10px;'>Potential MBTI type: <span style='color:red;'>{mbti_type}</span></p>"
+    styled_text = f"<p style='font-size:24px; margin-bottom: 10px;'>Estimated MBTI type: <span style='color:red;'>{mbti_type}</span></p>"
     st.markdown(styled_text, unsafe_allow_html=True)
 
     draw_polar_chart([o * 100 for o in outputs])
