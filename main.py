@@ -10,8 +10,8 @@ import ru_page as ru_page
 
 label_names = ['Extroversion', 'Neuroticism', 'Agreeableness', 'Conscientiousness', 'Openness']
 
-if 'language' not in st.session_state:
-    st.session_state['language'] = 'en'
+if 'language' not in st.query_params:
+    st.query_params['language'] = 'en'
 
 def draw_polar_chart(data):
     ln = label_names.copy()
@@ -54,7 +54,10 @@ def print_info(outputs):
         column.metric(label_names[i], f"{metric_value}%")
 
     mbti_type = big5_to_mbti(outputs)
-    styled_text = f"<p style='font-size:24px; margin-bottom: 10px;'>Estimated MBTI type: <span style='color:red;'>{mbti_type}</span></p>"
+    if st.query_params['language'] == "ru":
+        styled_text = f"<p style='font-size:24px; margin-bottom: 10px;'>Полученный тип MBTI: <span style='color:red;'>{mbti_type}</span></p>"
+    elif st.query_params['language'] == "en":
+        styled_text = f"<p style='font-size:24px; margin-bottom: 10px;'>Estimated MBTI type: <span style='color:red;'>{mbti_type}</span></p>"
     st.markdown(styled_text, unsafe_allow_html=True)
 
     draw_polar_chart([o * 100 for o in outputs])
@@ -70,7 +73,7 @@ def load_models():
     fModel = load_model.load_model(st.secrets["model_url"])
     return fModel, nlp, word_data
 
-if st.session_state['language'] == "ru":
+if st.query_params['language'] == "ru":
     ru_page.draw_page(load_models, processing, print_info)
-elif st.session_state['language'] == "en":
+elif st.query_params['language'] == "en":
     en_page.draw_page(load_models, processing, print_info)

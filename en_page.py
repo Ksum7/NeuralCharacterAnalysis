@@ -142,14 +142,15 @@ def draw_page(load_models, processing, print_info):
             except Exception as e:
                 print(e)
                 st.error("An error occurred while processing the input. Please try again.")
+    def change_lang():
+        l = st.session_state.langselect
+        if l == "Английский" or l == "English":
+            lang = 'en'
+        elif l == "Русский" or l == "Russian":
+            lang = 'ru'
+        if lang != st.query_params['language']:
+            st.query_params['language'] = lang
+            # st.rerun()
+    lang = st.sidebar.selectbox("Language", ["English", "Russian"], key='langselect', on_change=change_lang)
 
-    def change_lang(lang):
-        if lang != st.session_state['language']:
-            st.session_state['language'] = lang
-            st.rerun()
-
-    lang = st.sidebar.selectbox("Language", ["English", "Russian"])
-    if lang == 'English':
-        change_lang('en')
-    elif lang == 'Russian':
-        change_lang('ru')
+    

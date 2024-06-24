@@ -138,13 +138,14 @@ def draw_page(load_models, processing, print_info):
                 print(e)
                 st.error("Произошла ошибка при обработке ввода. Попробуйте снова.")
                 
-    def change_lang(lang):
-        if lang != st.session_state['language']:
-            st.session_state['language'] = lang
-            st.rerun()
+    def change_lang():
+        l = st.session_state.langselect
+        if l == "Английский" or l == "English":
+            lang = 'en'
+        elif l == "Русский" or l == "Russian":
+            lang = 'ru'
+        if lang != st.query_params['language']:
+            st.query_params['language'] = lang
+            # st.rerun()
 
-    lang = st.sidebar.selectbox("Язык", ["Русский", "Английский"])
-    if lang == "Английский":
-        change_lang('en')
-    elif lang == "Русский":
-        change_lang('ru')
+    lang = st.sidebar.selectbox("Язык", ["Русский", "Английский"], key='langselect', on_change=change_lang)
